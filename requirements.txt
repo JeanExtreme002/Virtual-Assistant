@@ -1,4 +1,5 @@
 googletrans
+infi.systray
 keyboard
 mlconjug
 psutil
