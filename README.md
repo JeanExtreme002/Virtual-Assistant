@@ -4,20 +4,16 @@ and more using just your voice. This virtual assistant supports the English and 
 has many settings that you can adjust to your liking.
 
 # Requirements:
+
+- Windows Only <br/>
+- Python 3.x <br/>
+- Dependencies installed
+
+Install all dependencies by typing in the terminal:
 ```
-Windows OS
-Python 3.x
-PIL                          # pip install Pillow
-googletrans                  # pip install googletrans
-keyboard                     # pip install keyboard
-mlconjug                     # pip install mlconjug
-psutil                       # pip install psutil
-pygame                       # pip install pygame
-pygetwindow                  # pip install pygetwindow
-requests                     # pip install requests
-speech_recognition           # pip install SpeechRecognition
-win10toast                   # pip install win10toast
+pip install -r requirements.txt
 ```
+
 
 # Voice Commands:
 

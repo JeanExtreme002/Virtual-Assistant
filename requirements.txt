@@ -1,0 +1,10 @@
+googletrans
+keyboard
+mlconjug
+psutil
+pygame
+pygetwindow
+requests
+win10toast
+Pillow
+SpeechRecognition
