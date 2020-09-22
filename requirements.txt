@@ -1,7 +1,7 @@
 googletrans
 infi.systray
 keyboard
-mlconjug
+mlconjug3
 psutil
 pygame
 pygetwindow
