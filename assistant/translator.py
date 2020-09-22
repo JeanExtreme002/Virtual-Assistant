@@ -1,5 +1,5 @@
 from googletrans import Translator
-from mlconjug import Verbiste
+from mlconjug3 import Verbiste
 
 
 class Translator(Translator):
