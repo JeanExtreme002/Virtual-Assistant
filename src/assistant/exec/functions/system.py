@@ -21,8 +21,8 @@ def get_filename_by_name(filename, path, only_ext = []):
 def open(path):
     getoutput('start "" "{}"'.format(path))
 
-def open_calculator():
-    Thread(target = lambda: getoutput("calc")).start()
+def open_program(name):
+    Thread(target = lambda: getoutput(name)).start()
 
 def open_directory(directory):
     for path in paths.split(";"):
@@ -30,7 +30,6 @@ def open_directory(directory):
         abs_path = os.path.abspath(path).lower()
 
         if dir_exists(abs_path): return open(abs_path)
-
     raise NotADirectoryError(directory)
 
 def open_file(filename, only_ext = []):
@@ -47,4 +46,6 @@ def open_file(filename, only_ext = []):
     raise FileNotFoundError(filename)
 
 def run_program(name):
-    open_file(name, [".exe", ".lnk"])
+    if name == "calculator": open_program("calc")
+    elif name == "explorer": open_program("explorer")
+    else: open_file(name, [".exe", ".lnk"])

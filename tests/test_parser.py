@@ -1,9 +1,7 @@
 import os, sys
 sys.path.append(os.getcwd())
 
-from src.assistant.exec import Executor
 from src.assistant.exec.parser import CommandParser, default_commands
-import math
 
 user_commands = {
     "do something to that": {
@@ -23,7 +21,7 @@ def test_command_parser():
 
     command, terminal_cmd, args, info = command_parser.parse("{} {}".format(voice_command1, target_args1))[:4]
     assert command == default_commands["en-us"][voice_command1.lower()]["command"]
-    assert terminal_cmd is None
+    assert not terminal_cmd
     assert args == target_args1.lower()
     assert info == default_commands["en-us"][command]["info"]
 

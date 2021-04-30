@@ -2,9 +2,38 @@ from .core import default_commands
 
 class CommandParser(object):
 
+    __replacing_list = {
+        "en-us": dict(),
+        "pt-br": {
+            "open": {
+                "bloco de notas": "notepad",
+                "calculadora": "calculator"
+            }
+        }
+    }
+
     def __init__(self, user_commands = dict(), language = "en-us"):
         self.__default_commands = self.__sort_dict(default_commands[language], reverse = True)
         self.__user_commands = self.__sort_dict(user_commands, reverse = True)
+        self.__language = language
+
+    def __get_args(self, voice_command, command):
+        return voice_command.replace(command, "", 1).lower().strip()
+
+    def __get_execution_data(self, command_info):
+        return command_info["command"], command_info.get("terminal_cmd", ""), command_info.get("info", "")
+
+    def __get_messages(self, command_info, args):
+        exec_msg = command_info.get("exec_msg", "").replace("{}", args)
+        error_msg = command_info.get("error_msg", "").replace("{}", args)
+        success_msg = command_info.get("success_msg", "")
+        return exec_msg, success_msg, error_msg
+
+    def __get_command(self, voice_command, command_list):
+        for command in command_list:
+            if voice_command.startswith(command):
+                return command, command_list[command]
+        return None, None
 
     def __sort_dict(self, dict_obj, key = None, reverse = False):
         new_dict = dict()
@@ -13,28 +42,23 @@ class CommandParser(object):
             new_dict[key] = dict_obj[key]
         return new_dict
 
-    def __get_command(self, voice_command, command_list):
-        for command in command_list:
-            if voice_command.startswith(command):
-
-                # Separates the command and the arguments.
-                args = voice_command.replace(command, "", 1).strip()
-
-                # Add the arguments to the messages.
-                exec_msg = command_list[command].get("exec_msg", "").replace("{}", args, 1)
-                error_msg = command_list[command].get("error_msg", "").replace("{}", args, 1)
-
-                success_msg = command_list[command].get("success_msg", "")
-                info = command_list[command]["info"]
-                terminal_command = command_list[command].get("terminal_cmd")
-                command = command_list[command]["command"]
-                return command, terminal_command, args, info, exec_msg, error_msg, success_msg
-
-        return [None for i in range(7)]
+    def __translate_args(self, command, args):
+        replacing_list = self.__replacing_list[self.__language].get(command, dict())
+        return replacing_list.get(args, args)
 
     def parse(self, voice_command):
         voice_command = voice_command.lower().strip()
-        command_data = self.__get_command(voice_command, self.__default_commands)
 
-        if command_data[0]: return command_data
-        return self.__get_command(voice_command, self.__user_commands)
+        # Look for the command in the default command list and in the user command list.
+        command, command_info = self.__get_command(voice_command, self.__default_commands)
+        if not command: command, command_info = self.__get_command(voice_command, self.__user_commands)
+
+        # Returns a None tuple if no command has been found.
+        if not command: return [None for i in range(7)]
+
+        args = self.__get_args(voice_command, command)
+        command, terminal_command, info = self.__get_execution_data(command_info)
+        exec_msg, success_msg, error_msg = self.__get_messages(command_info, args)
+
+        args = self.__translate_args(command, args)
+        return command, terminal_command, args, info, exec_msg, success_msg, error_msg

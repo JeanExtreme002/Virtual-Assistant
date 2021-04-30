@@ -1,3 +1,4 @@
+from .core.errors import LanguageNotSupportedError
 from .core.events import Events
 from .core.userConfig import UserConfig
 from .exec import Executor
@@ -8,15 +9,17 @@ __all__ = ("Assistant",)
 class Assistant(object):
 
     __allowed_languages = ["en-us", "pt-br"]
-    __assistant_name = "Jarvis"
     __assistant_language = "en-us"
-    __recognition_error_message = "I'm sorry, but I didn't understand what you said."
+    __recognition_error_message = {
+        "en-us": "I'm sorry, but I didn't understand what you said",
+        "pt-br": "Desculpe, mas eu não entendi o que você falou"
+    }
 
-    def __init__(self, name = "Jarvis", language = "en-us"):
+    def __init__(self, language = "en-us"):
         if language.lower() in self.__allowed_languages:
             self.__assistant_language = language.lower()
-
-        self.set_name(name)
+        else:
+            raise LanguageNotSupportedError(language, self.__allowed_languages)
 
         self.__events = Events()
         self.__speech = Speech()
@@ -29,9 +32,10 @@ class Assistant(object):
         self.__send_message(text)
 
     def __send_message(self, text):
-        speech = self.__speech.text_to_speech(text, self.__assistant_language)
-        self.__events.on_chat(text)
-        self.__events.on_speak(speech)
+        if text:
+            speech = self.__speech.text_to_speech(text, self.__assistant_language)
+            self.__events.on_speak(speech)
+            self.__events.on_chat(text)
 
     def __update_user_commands(self, user_commands):
         self.__user_config.set_user_commands(user_commands)
@@ -63,9 +67,6 @@ class Assistant(object):
         }
         self.__update_user_commands(user_commands)
 
-    def set_name(self, name):
-        self.__assistant_name = name.capitalize() if name and not name.isspace() else self.__assistant_name
-
     def talk(self):
         voice_command = self.__speech.speech_to_text(language = self.__assistant_language)
 
@@ -73,4 +74,4 @@ class Assistant(object):
             self.__executor.execute(voice_command, self.__send_message, self.__send_error)
         else:
             self.__events.on_recognition_error()
-            self.__send_message(self.__recognition_error_message)
+            self.__send_message(self.__recognition_error_message[self.__assistant_language])

@@ -6,8 +6,10 @@ def close_active_window():
     pygetwindow.getActiveWindow().close()
 
 def close_window_by_title(window_title):
-    window = find_window_by_title(window_title)
-    window.close()
+    if window_title:
+        window = find_window_by_title(window_title)
+        window.close()
+    else: close_active_window()
 
 def find_window_by_title(window_title):
     window_title = window_title.lower()

@@ -1,6 +1,6 @@
-from .functions.browser import search_on_google
-from .functions.directory import open_directory, open_file, open_calculator, run_program
-from .functions.window import close_active_window, close_window_by_title
+from .functions import browser
+from .functions import system
+from .functions import window
 from .parser import CommandParser, default_commands
 import math
 
@@ -10,13 +10,12 @@ class Executor(object):
 
     __commands = {
         "#user_command": lambda terminal_cmd, args: None,
-        "close window": lambda terminal_cmd, args: close_window_by_title(args),
-        "close": lambda terminal_cmd, args: close_active_window(),
-        "open folder": lambda terminal_cmd, args: open_directory(args),
-        "open file": lambda terminal_cmd, args: open_file(args),
-        "open calculator": lambda terminal_cmd, args: open_calculator(),
-        "open": lambda terminal_cmd, args: run_program(args),
-        "search": lambda terminal_cmd, args: search_on_google(args),
+        "close window": lambda terminal_cmd, args: window.close_window_by_title(args),
+        "close": lambda terminal_cmd, args: window.close_active_window(),
+        "open folder": lambda terminal_cmd, args: system.open_directory(args),
+        "open file": lambda terminal_cmd, args: system.open_file(args),
+        "open": lambda terminal_cmd, args: system.run_program(args),
+        "search": lambda terminal_cmd, args: browser.search_on_google(args),
     }
 
     __execution_error_message = {
@@ -36,7 +35,7 @@ class Executor(object):
         return command_parser.parse(voice_command)
 
     def execute(self, voice_command, msg_callback, error_callback):
-        command, terminal_cmd, args, info, exec_msg, error_msg, success_msg = self.__parse_command(voice_command)
+        command, terminal_cmd, args, info, exec_msg, success_msg, error_msg = self.__parse_command(voice_command)
         if not command: return self.__send_execution_error(error_callback)
 
         msg_callback(exec_msg)
@@ -44,8 +43,7 @@ class Executor(object):
         try:
             output = str(self.__commands[command](terminal_cmd, args))
             msg_callback(success_msg.replace("{}", output if output else ""))
-        except:
-            error_callback(error_msg)
+        except: error_callback(error_msg)
 
     def get_all_commands(self):
         commands = default_commands[self.__language].copy()

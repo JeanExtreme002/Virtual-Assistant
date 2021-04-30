@@ -26,6 +26,13 @@ def test_load_user_commands():
     assert user_config1.get_user_commands() == new_user_config1.get_user_commands()
     assert user_config2.get_user_commands() == new_user_config2.get_user_commands()
 
+def test_delete_user_commands():
+    user_config1.delete_user_commands()
+    user_config2.delete_user_commands()
+
+    assert not user_config1.get_user_commands()
+    assert not user_config2.get_user_commands()
+
 def test_block_illegal_commands():
     try:
         user_config1.set_user_commands(invalid_user_commands1)
