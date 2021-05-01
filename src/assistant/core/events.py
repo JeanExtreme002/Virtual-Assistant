@@ -4,8 +4,10 @@ class Events(object):
 
     __events = [
         "on_chat",
-        "on_exec_error",
+        "on_execution_end",
+        "on_execution_error",
         "on_listen",
+        "on_recognition",
         "on_recognition_error",
         "on_speak"
     ]

@@ -23,7 +23,7 @@
 }
 </string>
    </property>
-   <widget class="QLineEdit" name="assistantNameEntry">
+   <widget class="QLineEdit" name="assistantName">
     <property name="geometry">
      <rect>
       <x>150</x>
@@ -158,24 +158,6 @@
      <string>Start</string>
     </property>
    </widget>
-   <widget class="QKeySequenceEdit" name="keySequenceEdit">
-    <property name="geometry">
-     <rect>
-      <x>150</x>
-      <y>130</y>
-      <width>120</width>
-      <height>30</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>10</pointsize>
-     </font>
-    </property>
-    <property name="keySequence">
-     <string>Alt+V</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="pressToTalkLabel">
     <property name="geometry">
      <rect>
@@ -195,6 +177,60 @@
     </property>
     <property name="text">
      <string>Press to Talk:</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="pressToTalk">
+    <property name="geometry">
+     <rect>
+      <x>200</x>
+      <y>130</y>
+      <width>30</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
+    <property name="inputMask">
+     <string/>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="maxLength">
+     <number>1</number>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+    <property name="placeholderText">
+     <string>V</string>
+    </property>
+    <property name="clearButtonEnabled">
+     <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="identifierLabel">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>130</y>
+      <width>40</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);</string>
+    </property>
+    <property name="text">
+     <string>ALT +</string>
     </property>
    </widget>
   </widget>

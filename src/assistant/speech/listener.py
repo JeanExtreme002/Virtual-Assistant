@@ -18,18 +18,20 @@ class Listener(object):
         if callable(on_listen): on_listen()
         return self.__recognizer.listen(source, timeout = timeout)
 
-    def get_text_from_audio(self, filename, language = "en-us", timeout = None, on_listen = None):
+    def get_text_from_audio(self, filename, language = "en-us", timeout = None, on_listen = None, on_recognition = None):
         try:
             audio = self.__get_audio_from_file(filename, timeout = None, on_listen = None)
+            if callable(on_recognition): on_recognition()
             return self.__recognizer.recognize_google(audio, language = language)
         except FileNotFoundError as error:
             raise error
         except:
             return str()
 
-    def speech_to_text(self, language = "en-us", timeout = None, on_listen = None):
+    def speech_to_text(self, language = "en-us", timeout = None, on_listen = None, on_recognition = None):
         try:
             audio = self.__get_audio_from_microphone(timeout = timeout, on_listen = on_listen)
+            if callable(on_recognition): on_recognition()
             return self.__recognizer.recognize_google(audio, language = language)
         except:
             return str()

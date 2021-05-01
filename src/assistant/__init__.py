@@ -24,17 +24,16 @@ class Assistant(object):
         self.__events = Events()
         self.__speech = Speech()
         self.__executor = Executor(self.__assistant_language)
-
         self.__user_config = UserConfig(language = self.__assistant_language)
 
     def __send_error(self, text):
-        self.__events.on_exec_error()
+        self.__events.on_execution_error()
         self.__send_message(text)
 
     def __send_message(self, text):
         if text:
             speech = self.__speech.text_to_speech(text, self.__assistant_language)
-            self.__events.on_speak(speech)
+            if speech: self.__events.on_speak(speech)
             self.__events.on_chat(text)
 
     def __update_user_commands(self, user_commands):
@@ -68,10 +67,15 @@ class Assistant(object):
         self.__update_user_commands(user_commands)
 
     def talk(self):
-        voice_command = self.__speech.speech_to_text(language = self.__assistant_language)
+        voice_command = self.__speech.speech_to_text(
+            language = self.__assistant_language,
+            on_listen = self.__events.on_listen,
+            on_recognition = self.__events.on_recognition
+        )
 
         if voice_command:
             self.__executor.execute(voice_command, self.__send_message, self.__send_error)
+            self.__events.on_execution_end()
         else:
             self.__events.on_recognition_error()
             self.__send_message(self.__recognition_error_message[self.__assistant_language])
