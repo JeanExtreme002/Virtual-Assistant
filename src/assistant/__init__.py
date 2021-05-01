@@ -66,6 +66,8 @@ class Assistant(object):
         }
         self.__update_user_commands(user_commands)
 
+    def stop(self): pass
+    
     def talk(self):
         voice_command = self.__speech.speech_to_text(
             language = self.__assistant_language,

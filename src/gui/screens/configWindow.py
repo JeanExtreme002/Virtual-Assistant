@@ -1,4 +1,4 @@
-from PyQt5.QtGui import QIcon, QPixmap
+from PyQt5.QtGui import QIcon
 from PyQt5.uic import loadUi
 
 class ConfigWindow(object):
@@ -8,7 +8,7 @@ class ConfigWindow(object):
     def __init__(self, ui_filename, title = "", icon = None):
         self.__config_window = loadUi(ui_filename)
         self.__config_window.setWindowTitle(title)
-        self.__config_window.setWindowIcon(QIcon(QPixmap(icon)))
+        self.__config_window.setWindowIcon(QIcon(icon))
 
     def close(self):
         self.__config_window.close()
