@@ -4,4 +4,4 @@ import sys
 __author__ = "Jean Loui Bernard Silva de Jesus"
 
 application = App("Virtual Assistant", sys.argv)
-sys.exit(application.run())
+sys.exit(application.exec_())

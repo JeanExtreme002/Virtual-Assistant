@@ -26,3 +26,7 @@ class QTrayIcon(object):
 
     def set_title(self, title):
         self.__trayIcon.setToolTip(title)
+
+    def show_message(self, title, message, duration = 5000, icon = None):
+        icon = QIcon(icon) if icon else self.__icon
+        self.__trayIcon.showMessage(title, message, self.__icon, duration)

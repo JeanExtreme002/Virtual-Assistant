@@ -1,5 +1,4 @@
 from PyQt5 import QtCore, QtWidgets, QtGui
-import sys
 
 class QToaster(QtWidgets.QFrame):
     closed = QtCore.pyqtSignal()

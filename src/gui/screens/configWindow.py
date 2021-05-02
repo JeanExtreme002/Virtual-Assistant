@@ -26,7 +26,7 @@ class ConfigWindow(object):
 
     def get_hotkey(self):
         key = self.__config_window.pressToTalk.text().lower()
-        return ("<alt>+" + key) if key else ""
+        return "<alt>+" + (key if key else self.__config_window.pressToTalk.placeholderText())
 
     def is_active(self):
         return self.__active
