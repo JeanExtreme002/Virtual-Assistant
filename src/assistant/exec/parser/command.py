@@ -20,13 +20,16 @@ class CommandParser(object):
     def __get_args(self, voice_command, command):
         return voice_command.replace(command, "", 1).lower().strip()
 
+    def __get_error_code(self, command_info):
+        return int(command_info.get("error_code", -1))
+
     def __get_execution_data(self, command_info):
-        return command_info["command"], command_info.get("terminal_cmd", ""), command_info.get("info", "")
+        return command_info["command"], command_info.get("terminal_command", ""), command_info.get("info", "")
 
     def __get_messages(self, command_info, args):
-        exec_msg = command_info.get("exec_msg", "").replace("{}", args)
-        error_msg = command_info.get("error_msg", "").replace("{}", args)
-        success_msg = command_info.get("success_msg", "")
+        exec_msg = command_info.get("exec_message", "").replace("{args}", args)
+        error_msg = command_info.get("error_message", "").replace("{args}", args)
+        success_msg = command_info.get("success_message", "").replace("{args}", args)
         return exec_msg, success_msg, error_msg
 
     def __get_command(self, voice_command, command_list):
@@ -59,6 +62,7 @@ class CommandParser(object):
         args = self.__get_args(voice_command, command)
         command, terminal_command, info = self.__get_execution_data(command_info)
         exec_msg, success_msg, error_msg = self.__get_messages(command_info, args)
+        error_code = self.__get_error_code(command_info)
 
         args = self.__translate_args(command, args)
-        return command, terminal_command, args, info, exec_msg, success_msg, error_msg
+        return command, terminal_command, args, info, exec_msg, success_msg, error_msg, error_code

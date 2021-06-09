@@ -4,10 +4,12 @@ class Events(object):
 
     __events = [
         "on_chat",
+        "on_execution",
         "on_execution_end",
         "on_execution_error",
         "on_listen",
         "on_recognition",
+        "on_recognition_end",
         "on_recognition_error",
         "on_speak"
     ]
@@ -17,13 +19,13 @@ class Events(object):
             self.__set_event(event)
 
     def __setattr__(self, attribute, value):
-        if attribute.lower().startswith("on_"): self.add_event(attribute, value)
+        if attribute.lower().startswith("on_"): self.set_event(attribute, value)
         else: self.__dict__[attribute] = value
 
     def __set_event(self, event, function = lambda *args: None):
         self.__dict__[event.lower()] = function
 
-    def add_event(self, event, function):
+    def set_event(self, event, function):
         if not callable(function):
             raise TypeError("'{}' is not a function".format(type(function).__name__))
 

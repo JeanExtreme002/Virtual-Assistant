@@ -9,13 +9,13 @@ __all__ = ("Executor",)
 class Executor(object):
 
     __commands = {
-        "#user_command": lambda terminal_cmd, args: None,
-        "close window": lambda terminal_cmd, args: window.close_window_by_title(args),
-        "close": lambda terminal_cmd, args: window.close_active_window(),
-        "open folder": lambda terminal_cmd, args: system.open_directory(args),
-        "open file": lambda terminal_cmd, args: system.open_file(args),
-        "open": lambda terminal_cmd, args: system.run_program(args),
-        "search": lambda terminal_cmd, args: browser.search_on_google(args),
+        "#user_command": lambda terminal_cmd, args: system.exec_command(terminal_cmd.replace("{args}", args, 1)),
+        "close window": lambda terminal_cmd, args: (0, window.close_window_by_title(args)),
+        "close": lambda terminal_cmd, args: (0, window.close_active_window()),
+        "open folder": lambda terminal_cmd, args: (0, system.open_directory(args)),
+        "open file": lambda terminal_cmd, args: (0, system.open_file(args)),
+        "open": lambda terminal_cmd, args: (0, system.run_program(args)),
+        "search": lambda terminal_cmd, args: (0, browser.search_on_google(args)),
     }
 
     __execution_error_message = {
@@ -35,14 +35,14 @@ class Executor(object):
         return command_parser.parse(voice_command)
 
     def execute(self, voice_command, msg_callback, error_callback):
-        command, terminal_cmd, args, info, exec_msg, success_msg, error_msg = self.__parse_command(voice_command)
+        command, terminal_cmd, args, info, exec_msg, success_msg, error_msg, error_code = self.__parse_command(voice_command)
         if not command: return self.__send_execution_error(error_callback)
 
         msg_callback(exec_msg)
 
         try:
-            output = str(self.__commands[command](terminal_cmd, args))
-            msg_callback(success_msg.replace("{}", output if output else ""))
+            exit_code, output = self.__commands[command](terminal_cmd, args)
+            msg_callback(success_msg.replace("{output}", str(output) if output else ""))
         except: error_callback(error_msg)
 
     def get_all_commands(self):

@@ -1,7 +1,7 @@
-from src import App
+from src import Application
 import sys
 
 __author__ = "Jean Loui Bernard Silva de Jesus"
 
-application = App("Virtual Assistant", sys.argv)
+application = Application("Virtual Assistant", sys.argv)
 sys.exit(application.exec_())

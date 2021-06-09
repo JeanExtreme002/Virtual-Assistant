@@ -11,7 +11,7 @@ def test_default_event():
 
 def test_set_event():
     events.on_listen = lambda x: None
-    events.add_event("on_listen", lambda x: None)
+    events.set_event("on_listen", lambda x: None)
 
 def test_block_invalid_value():
     try:

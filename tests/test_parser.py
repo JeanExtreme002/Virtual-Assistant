@@ -5,10 +5,10 @@ from src.assistant.exec.parser import CommandParser, default_commands
 
 user_commands = {
     "do something to that": {
-        "command": "#user_command", "terminal_cmd": "execute something to that target", "info": "Just a test"
+        "command": "#user_command", "terminal_command": "execute something to that target", "info": "Just a test"
     },
     "do something": {
-        "command": "#user_command2", "terminal_cmd": "execute something", "info": "Just a second test"
+        "command": "#user_command2", "terminal_command": "execute something", "info": "Just a second test"
     }
 }
 
@@ -27,13 +27,13 @@ def test_command_parser():
 
     command, terminal_cmd, args, info = command_parser.parse("{} {}".format(voice_command2, target_args2))[:4]
     assert command == user_commands["do something"]["command"]
-    assert terminal_cmd == user_commands["do something"]["terminal_cmd"]
+    assert terminal_cmd == user_commands["do something"]["terminal_command"]
     assert args == target_args2.lower()
     assert info == user_commands["do something"]["info"]
 
     command, terminal_cmd, args, info = command_parser.parse("{} {}".format(voice_command3, target_args3))[:4]
     assert command == user_commands["do something to that"]["command"]
-    assert terminal_cmd == user_commands["do something to that"]["terminal_cmd"]
+    assert terminal_cmd == user_commands["do something to that"]["terminal_command"]
     assert args == target_args3.lower()
     assert info == user_commands["do something to that"]["info"]
 

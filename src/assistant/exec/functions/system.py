@@ -1,10 +1,13 @@
 from .environment import paths
-from subprocess import getoutput
+from subprocess import getstatusoutput
 from threading import Thread
 import os
 
 def dir_exists(directory):
     return os.path.exists(directory) and os.path.isdir(directory)
+
+def exec_command(command):
+    return getstatusoutput(command)
 
 def file_exists(filename):
     return os.path.exists(filename) and os.path.isfile(filename)
@@ -19,10 +22,10 @@ def get_filename_by_name(filename, path, only_ext = []):
                 return abs_path
 
 def open(path):
-    getoutput('start "" "{}"'.format(path))
+    exec_command('start "" "{}"'.format(path))
 
 def open_program(name):
-    Thread(target = lambda: getoutput(name)).start()
+    Thread(target = lambda: exec_command(name)).start()
 
 def open_directory(directory):
     for path in paths.split(";"):
