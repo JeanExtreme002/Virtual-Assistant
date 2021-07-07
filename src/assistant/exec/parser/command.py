@@ -1,68 +1,73 @@
-from .core import default_commands
+class Command(object):
 
-class CommandParser(object):
+    def __init__(self, **kwargs):
+        """
+        Keyword arguments:
+        - system_command
+        - terminal_command (required if system_command is None)
+        - info
+        - exec_message
+        - success_message
+        - error_message
+        - error_code
+        """
 
-    __replacing_list = {
-        "en-us": dict(),
-        "pt-br": {
-            "open": {
-                "bloco de notas": "notepad",
-                "calculadora": "calculator"
-            }
+        self.__system_command = kwargs.get("system_command", "")
+
+        if not self.__system_command and not "terminal_command" in kwargs:
+            raise TypeError("__init__() missing 1 required argument: 'terminal_command'")
+
+        self.__terminal_command = kwargs.get("terminal_command", "")
+        self.__args = kwargs.get("args", "")
+        self.__info = kwargs.get("info", "")
+        self.__exec_message = kwargs.get("exec_message", "")
+        self.__success_message = kwargs.get("success_message", "")
+        self.__error_message = kwargs.get("error_message", "")
+        self.__error_code = kwargs.get("error_code", 1)
+
+    def is_system_command(self):
+        return bool(self.__system_command)
+
+    def to_dict(self):
+        return {
+            "system_command": self.__system_command,
+            "terminal_command": self.__terminal_command,
+            "args": self.__args,
+            "info": self.__info,
+            "exec_message": self.__exec_message,
+            "success_message": self.__success_message,
+            "error_message": self.__error_message,
+            "error_code": self.__error_code
         }
-    }
 
-    def __init__(self, user_commands = dict(), language = "en-us"):
-        self.__default_commands = self.__sort_dict(default_commands[language], reverse = True)
-        self.__user_commands = self.__sort_dict(user_commands, reverse = True)
-        self.__language = language
+    @property
+    def system_command(self):
+        return self.__system_command
 
-    def __get_args(self, voice_command, command):
-        return voice_command.replace(command, "", 1).lower().strip()
+    @property
+    def terminal_command(self):
+        return self.__terminal_command
 
-    def __get_error_code(self, command_info):
-        return int(command_info.get("error_code", -1))
+    @property
+    def args(self):
+        return self.__args
 
-    def __get_execution_data(self, command_info):
-        return command_info["command"], command_info.get("terminal_command", ""), command_info.get("info", "")
+    @property
+    def info(self):
+        return self.__info
 
-    def __get_messages(self, command_info, args):
-        exec_msg = command_info.get("exec_message", "").replace("{args}", args)
-        error_msg = command_info.get("error_message", "").replace("{args}", args)
-        success_msg = command_info.get("success_message", "").replace("{args}", args)
-        return exec_msg, success_msg, error_msg
+    @property
+    def exec_message(self):
+        return self.__exec_message
 
-    def __get_command(self, voice_command, command_list):
-        for command in command_list:
-            if voice_command.startswith(command):
-                return command, command_list[command]
-        return None, None
+    @property
+    def success_message(self):
+        return self.__success_message
 
-    def __sort_dict(self, dict_obj, key = None, reverse = False):
-        new_dict = dict()
+    @property
+    def error_message(self):
+        return self.__error_message
 
-        for key in sorted(dict_obj, key = key, reverse = reverse):
-            new_dict[key] = dict_obj[key]
-        return new_dict
-
-    def __translate_args(self, command, args):
-        replacing_list = self.__replacing_list[self.__language].get(command, dict())
-        return replacing_list.get(args, args)
-
-    def parse(self, voice_command):
-        voice_command = voice_command.lower().strip()
-
-        # Look for the command in the default command list and in the user command list.
-        command, command_info = self.__get_command(voice_command, self.__default_commands)
-        if not command: command, command_info = self.__get_command(voice_command, self.__user_commands)
-
-        # Returns a None tuple if no command has been found.
-        if not command: return [None for i in range(7)]
-
-        args = self.__get_args(voice_command, command)
-        command, terminal_command, info = self.__get_execution_data(command_info)
-        exec_msg, success_msg, error_msg = self.__get_messages(command_info, args)
-        error_code = self.__get_error_code(command_info)
-
-        args = self.__translate_args(command, args)
-        return command, terminal_command, args, info, exec_msg, success_msg, error_msg, error_code
+    @property
+    def error_code(self):
+        return self.__error_code

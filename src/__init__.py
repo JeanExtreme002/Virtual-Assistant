@@ -121,5 +121,5 @@ class Application(QApplication):
             self.__tray_icon.show_message(self.__assistant.get_name(), message, duration)
 
     def update_command_list(self):
-        commands = self.__assistant.get_all_commands()
-        self.__command_list_window.set_command_list(commands)
+        command_list = self.__assistant.get_command_list()
+        self.__command_list_window.set_command_list(command_list)

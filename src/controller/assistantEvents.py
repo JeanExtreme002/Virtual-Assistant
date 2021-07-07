@@ -2,7 +2,7 @@ from ..paths import paths
 from ..util.system.sound import play_sound
 from .controller import Controller
 
-class AssistantController(Controller):
+class AssistantEvents(Controller):
 
     def __on_listen(self, *args):
         play_sound(paths["listening_sound"])
@@ -32,12 +32,3 @@ class AssistantController(Controller):
     def set_assistant(self, assistant):
         super().set_assistant(assistant)
         self.__set_assistant_events()
-
-    def talk(self):
-        self.get_application().disable_command_list()
-        self.get_application().disable_config_window()
-
-        self.get_assistant().talk()
-
-        self.get_application().enable_command_list()
-        self.get_application().enable_config_window()

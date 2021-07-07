@@ -37,7 +37,11 @@
      <number>0</number>
     </property>
     <item row="0" column="0">
-     <widget class="QTableWidget" name="commandList"/>
+     <widget class="QTableWidget" name="commandList">
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+     </widget>
     </item>
     <item row="1" column="0">
      <widget class="QFrame" name="frame">
@@ -297,6 +301,27 @@
        </property>
        <property name="text">
         <string>Remove Command</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="errorInformation">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>220</y>
+         <width>270</width>
+         <height>30</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>8</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">color: rgb(255, 0, 0);</string>
+       </property>
+       <property name="text">
+        <string/>
        </property>
       </widget>
      </widget>
