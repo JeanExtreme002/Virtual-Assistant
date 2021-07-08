@@ -1,0 +1,8 @@
+gTTS
+pygame
+pygetwindow
+pynput
+PyQt5
+pytest
+requests
+SpeechRecognition

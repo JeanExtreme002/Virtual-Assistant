@@ -1,6 +1,6 @@
 import os
 
-HOME = os.environ['HOMEDRIVE'] + os.environ["HOMEPATH"]
+HOME = os.environ["HOMEDRIVE"] + os.environ["HOMEPATH"]
 
 paths = HOME + ";"
 paths += os.path.join(HOME, "desktop") + ";"

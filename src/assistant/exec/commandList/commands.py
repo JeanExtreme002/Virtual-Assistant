@@ -86,6 +86,13 @@ reserved_commands = {
             success_message = "Your private IP is \"{output}\"",
             error_message = ""
         ),
+        "show public ip": Command(
+            system_command = "show public ip",
+            info = "Shows the public IP",
+            exec_message = "",
+            success_message = "Your public IP is \"{output}\"",
+            error_message = ""
+        ),
         "write": Command(
             system_command = "write",
             info = "Converts the speech to text",
@@ -170,6 +177,13 @@ reserved_commands = {
             info = "Mostra o IP privado",
             exec_message = "",
             success_message = "O seu IP privado é \"{output}\"",
+            error_message = ""
+        ),
+        "mostrar ip público": Command(
+            system_command = "show public ip",
+            info = "Mostra o IP público",
+            exec_message = "",
+            success_message = "O seu IP público é \"{output}\"",
             error_message = ""
         ),
         "pesquisar": Command(

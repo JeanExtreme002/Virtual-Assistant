@@ -1,4 +1,4 @@
-from .functions import browser, net, system, window
+from .functions import net, system, window
 from .commandList import CommandList
 from .parser import VoiceCommandParser
 
@@ -18,8 +18,9 @@ class Executor(object):
         "open folder": lambda terminal_cmd, args: (-1, system.open_directory(args)),
         "open file": lambda terminal_cmd, args: (-1, system.open_file(args)),
         "open": lambda terminal_cmd, args: (-1, system.run_program(args)),
-        "search": lambda terminal_cmd, args: (-1, browser.search_on_google(args)),
+        "search": lambda terminal_cmd, args: (-1, net.search_on_google(args)),
         "show ip": lambda terminal_cmd, args: (-1, net.get_private_ip()),
+        "show public ip": lambda terminal_cmd, args: (-1, net.get_public_ip()),
         "write": lambda terminal_cmd, args: (-1, system.write(args)),
     }
 
