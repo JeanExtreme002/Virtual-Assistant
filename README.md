@@ -1,5 +1,5 @@
 # Description:
-This is a simple virtual assistant. With it, you can search the Internet, access websites, open programs, 
+This is a simple virtual assistant. With it, you can search on web, access websites, open programs, 
 and more using just your voice. This virtual assistant supports the English and Portuguese languages and 
 has many settings that you can adjust to your liking.
 
