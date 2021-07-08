@@ -1,11 +1,19 @@
-from .core.errors import LanguageNotSupportedError
-from .core.events import Events
+from .events import Events
 from .exec import Executor
 from .exec.commandList import CommandList
 from .speech import Speech
 from .userConfig import UserConfig
 
-__all__ = ("Assistant",)
+__all__ = ("Assistant", "LanguageNotSupportedError")
+
+class LanguageNotSupportedError(Exception):
+
+    def __init__(self, language, allowed_languages):
+        self.__language = language
+        self.__allowed_languages = allowed_languages
+
+    def __str__(self):
+        return "'{}' is not supported. Choose one of these languages {}".format(self.__language, self.__allowed_languages)
 
 class Assistant(object):
 

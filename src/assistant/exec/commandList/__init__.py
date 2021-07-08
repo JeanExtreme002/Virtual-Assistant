@@ -5,9 +5,9 @@ from ..parser.command import Command
 class CommandList(object):
 
     def __init__(self, language):
-        self.__reserved_command_list = reserved_commands[language].copy()
-        self.__user_command_list = dict()
         self.__language = language.lower()
+        self.__reserved_command_list = reserved_commands[self.__language].copy()
+        self.__user_command_list = dict()
 
     def __contains__(self, voice_command):
         return voice_command.lower().replace(".", "").replace(",", "") in self.get_all_commands()
