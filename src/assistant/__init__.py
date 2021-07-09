@@ -2,7 +2,7 @@ from .events import Events
 from .exec import Executor
 from .exec.commandList import CommandList
 from .speech import Speech
-from .userConfig import UserConfig
+from .storage import UserCommandStorage
 
 __all__ = ("Assistant", "LanguageNotSupportedError")
 
@@ -29,10 +29,10 @@ class Assistant(object):
         self.__name = name.capitalize()
 
         self.__events, self.__speech = Events(), Speech()
-        self.__user_config = UserConfig(self.__language)
+        
+        self.__user_command_storage = UserCommandStorage(self.__language)
+        self.__command_list = self.__user_command_storage.get_command_list()
 
-        self.__command_list = CommandList(self.__language)
-        self.__command_list += self.__user_config.get_command_list()
         self.__executor = Executor(self.__command_list)
 
     def __send_execution_error(self, text):
@@ -65,11 +65,11 @@ class Assistant(object):
         return self.__name
 
     def get_user_commands(self):
-        return self.__user_config.get_user_commands()
+        return self.__user_command_storage.get_user_commands()
 
     def remove_user_command(self, command):
         self.__command_list.remove_user_command(command)
-        self.__user_config.save_user_commands(self.__command_list)
+        self.__user_command_storage.save_user_commands(self.__command_list)
 
     def set_user_command(self, voice_command, terminal_cmd, info, exec_msg, success_msg, error_msg, error_code):
         command_data = {
@@ -81,7 +81,7 @@ class Assistant(object):
             "error_code": error_code
         }
         self.__command_list.set_user_command(voice_command, command_data)
-        self.__user_config.save_user_commands(self.__command_list)
+        self.__user_command_storage.save_user_commands(self.__command_list)
 
     def talk(self, audio_filename = None):
         if audio_filename:
